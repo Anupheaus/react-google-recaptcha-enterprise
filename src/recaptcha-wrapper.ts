@@ -1,12 +1,10 @@
-import ReCAPTCHA from "./recaptcha";
+import { ReCaptcha as ReCaptchaComponent } from "./recaptcha";
 import makeAsyncScriptLoader from "react-async-script";
 
 const callbackName = "onloadcallback";
 const globalName = "grecaptcha";
 
-function getOptions() {
-  return (typeof window !== "undefined" && window.recaptchaOptions) || {};
-}
+const getOptions = () => (window as any)?.recaptchaOptions ?? {};
 
 function getURL() {
   const dynamicOptions = getOptions();
@@ -14,7 +12,7 @@ function getURL() {
   return `https://${hostname}/recaptcha/enterprise.js?onload=${callbackName}&render=explicit`;
 }
 
-export default makeAsyncScriptLoader(getURL, {
+export const ReCaptcha = makeAsyncScriptLoader(getURL(), {
   callbackName,
   globalName,
-})(ReCAPTCHA);
+})(ReCaptchaComponent);
